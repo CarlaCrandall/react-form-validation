@@ -1,0 +1,23 @@
+@import './font-awesome/font-awesome';
+@import './core/reset';
+@import './core/fonts';
+@import './core/mixins';
+@import './vars';
+
+html {
+    font-family: 'Open Sans', sans-serif;
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+button {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+}
