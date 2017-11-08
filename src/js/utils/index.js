@@ -12,3 +12,7 @@ export const hasValue = (value) => {
 
     return false;
 };
+
+export const isFunction = (functionToCheck) => {
+    return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+};

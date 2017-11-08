@@ -2,10 +2,10 @@ import * as Rules from '../rules';
 import ERROR_MESSAGES from '../messages';
 
 export default {
-    __default: [{
-        rule: Rules.minLength.bind(null, 3),
-        message: ERROR_MESSAGES.minLength.replace('{{LENGTH}}', 3)
-    }],
+    // __default: [{
+    //     rule: Rules.minLength.bind(null, 3),
+    //     message: ERROR_MESSAGES.minLength.replace('{{LENGTH}}', 3)
+    // }],
     name: [{
         rule: Rules.minLength.bind(null, 3),
         message: ERROR_MESSAGES.minLength.replace('{{LENGTH}}', 3)

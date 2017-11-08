@@ -11,20 +11,20 @@ export const validateField = (validations, value) => {
     return errors;
 };
 
-export const validateForm = (schema, form) => {
-    const fields = Object.keys(schema);
+export const validateForm = (schema, fields) => {
+    const fieldNames = Object.keys(schema);
     const errors = {};
-    let isValid = true;
+    let valid = true;
 
-    fields.forEach((name) => {
-        const fieldErrors = validateField(schema[name], form[name]);
+    fieldNames.forEach((name) => {
+        const fieldErrors = validateField(schema[name], fields[name].value);
 
         if (hasValue(fieldErrors)) {
             errors[name] = fieldErrors;
-            isValid = false;
+            valid = false;
         }
     });
 
-    return { errors, isValid };
+    return { errors, valid };
 };
 

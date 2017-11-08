@@ -1,6 +1,7 @@
 import React from 'react';
 import { validateField, validateForm } from '../validation/validator';
 import { TestFormSchema } from '../validation/schemas';
+import { ValidatedField } from './';
 
 export default class Form extends React.Component {
 
@@ -10,65 +11,96 @@ export default class Form extends React.Component {
         super(props);
         this.state = {
             errors: {},
-            form: {
-                name: '',
-                random: ''
-            }
+            fields: this._constructFieldsFromSchema(TestFormSchema)
         };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
     }
 
-    validateField(name, value) {
-        
+    _constructFieldsFromSchema(schema) {
+        const fields = {};
+        const keys = Object.keys(schema);
+
+        keys.forEach((key) => {
+            if (key !== '__default') {
+                fields[key] = {
+                    value: '',
+                    valid: null,
+                    pristine: true,
+                    touched: false
+                };
+            }
+        });
+
+        return fields;
     }
 
-    onSubmit(event) {
-        event.preventDefault();
-        const { errors, isValid } = validateForm(TestFormSchema, this.state.form);
-        this.setState({ errors, isValid });
+    _setFieldValue(name, value) {
+        const { fields } = this.state;
+        fields[name].value = value;
+        this.setState({ fields });
     }
 
-    onChange(event) {
-        const { name, value } = event.target;
-        const { form } = this.state;
-        form[name] = value;
-        this.setState({ form });
-    }
-
-    onBlur(event) {
-        const { name, value } = event.target;
+    _setFieldErrors(name, value) {
         const { errors } = this.state;
         errors[name] = validateField(TestFormSchema[name], value);
         this.setState({ errors });
     }
 
+    _setFieldState(name, state) {
+        const { fields } = this.state;
+        fields[name] = { ...fields[name], ...state };
+        this.setState({ fields });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        const { errors, valid } = validateForm(TestFormSchema, this.state.fields);
+        this.setState({ errors, valid });
+    }
+
+    handleChange(name, value) {
+        this._setFieldValue(name, value);
+        this._setFieldState(name, { pristine: false })
+    }
+
+    handleBlur(name, value) {
+        this._setFieldErrors(name, value);
+        this._setFieldState(name, { touched: true });
+    }
+
     render() {
-        const { form, errors, isValid } = this.state;
+        const { fields, errors, valid } = this.state;
+        const { name, random } = fields;
 
         return (
-            <form onSubmit={event => this.onSubmit(event)}>
-                {isValid === false && <h2>INVALID</h2>}
+            <form onSubmit={this.handleSubmit}>
+                {valid === false && <h2>INVALID</h2>}
+
                 <div>
                     <label htmlFor="name">Name</label>
-                    <input 
+                    <ValidatedField
+                        type="text" 
                         id="name" 
                         name="name" 
-                        type="text" 
-                        value={form.name} 
-                        onChange={event => this.onChange(event)}
-                        onBlur={event => this.onBlur(event)} 
+                        {...name}
+                        onChange={this.handleChange}
+                        onBlur={this.handleBlur} 
                     />
                     {errors.name}
                 </div>
 
                 <div>
                     <label htmlFor="random">Random</label>
-                    <input 
+                    <ValidatedField
+                        type="text" 
                         id="random" 
                         name="random" 
-                        type="text" 
-                        value={form.random} 
-                        onChange={event => this.onChange(event)}
-                        onBlur={event => this.onBlur(event)} 
+                        {...random}
+                        onChange={this.handleChange}
+                        onBlur={this.handleBlur}
                     />
                     {errors.random}
                 </div>
