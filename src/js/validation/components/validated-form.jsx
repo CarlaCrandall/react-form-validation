@@ -1,5 +1,5 @@
 import React from 'react';
-import { validateField, validateForm } from '../validation/validator';
+import { validateField, validateForm } from '../validator';
 
 
 export default (WrappedComponent, Schema) => {

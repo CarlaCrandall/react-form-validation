@@ -1,4 +1,4 @@
-import { hasValue } from '../utils';
+import { hasValue } from './utils';
 
 const createValidator = ({ rule, message }) => (value) => {
     const isValid = rule(value);

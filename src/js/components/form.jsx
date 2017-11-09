@@ -1,7 +1,6 @@
 import React from 'react';
 import { TestFormSchema } from '../validation/schemas';
-import { ValidatedField } from './';
-import ValidatedForm from './validated-form.jsx';
+import { ValidatedField, ValidatedForm } from '../validation';
 
 
 class Form extends React.Component {

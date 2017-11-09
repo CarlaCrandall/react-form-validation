@@ -1,4 +1,4 @@
-import Expressions from './expressions';
+import { EXPRESSIONS } from './config';
 
 export const required = value => value ? true : false;
 
@@ -13,6 +13,6 @@ export const maxLength = (len, value) => {
 };
 
 export const regex = (expression, value) => {
-    const exp = new RegExp(Expressions[expression]);
+    const exp = new RegExp(EXPRESSIONS[expression]);
     return exp.test(value);
 };

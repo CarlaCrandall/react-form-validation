@@ -1,1 +1,1 @@
-export TestFormSchema from './testForm';
+export TestFormSchema from './test-form';
