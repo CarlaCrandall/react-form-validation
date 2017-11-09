@@ -25,7 +25,7 @@ export default class ValidatedField extends React.Component {
     }
 
     render() {
-        const { type, name, value, valid, pristine, touched, onChange, onBlur, ...otherProps } = this.props;
+        const { type, name, value, errors, valid, pristine, touched, onChange, onBlur, ...otherProps } = this.props;
 
         return (
             <input 
