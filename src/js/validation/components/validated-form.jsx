@@ -2,18 +2,15 @@ import React from 'react';
 import { validateField, validateForm } from '../validator';
 
 
-export default (WrappedComponent, Schema) => {
+export default (WrappedForm, Schema) => {
     return class ValidatedFormWrapper extends React.Component {
         constructor(props) {
             super(props)
             this.state = {
-                errors: {},
                 fields: this._constructFieldsFromSchema()
             };
-
+            
             this.handleSubmit = this.handleSubmit.bind(this);
-            this.handleChange = this.handleChange.bind(this);
-            this.handleBlur = this.handleBlur.bind(this);
         }
 
         _constructFieldsFromSchema() {
@@ -23,27 +20,19 @@ export default (WrappedComponent, Schema) => {
             keys.forEach((key) => {
                 if (key !== '__default') {
                     fields[key] = {
+                        name: key,
                         value: '',
+                        errors: [],
                         valid: null,
                         pristine: true,
-                        touched: false
+                        touched: false,
+                        onChange: (name, value) => this.handleChange(name, value),
+                        onBlur: (name, value) => this.handleBlur(name, value)
                     };
                 }
             });
 
             return fields;
-        }
-
-        _setFieldValue(name, value) {
-            const { fields } = this.state;
-            fields[name].value = value;
-            this.setState({ fields });
-        }
-
-        _setFieldErrors(name, value) {
-            const { errors } = this.state;
-            errors[name] = validateField(Schema[name], value);
-            this.setState({ errors });
         }
 
         _setFieldState(name, state) {
@@ -54,30 +43,40 @@ export default (WrappedComponent, Schema) => {
 
         handleSubmit(event) {
             event.preventDefault();
-            const { errors, valid } = validateForm(Schema, this.state.fields);
-            this.setState({ errors, valid });
+
+            const { fields } = this.state;
+            const { errors, valid } = validateForm(Schema, fields);
+
+            Object.keys(errors).forEach((fieldName) => {
+                fields[fieldName].errors = errors[fieldName];
+            });
+
+            this.setState({ fields, valid });
         }
 
         handleChange(name, value) {
-            this._setFieldValue(name, value);
-            this._setFieldState(name, { pristine: false })
+            this._setFieldState(name, {
+                value,
+                pristine: false
+            })
         }
 
         handleBlur(name, value) {
-            this._setFieldErrors(name, value);
-            this._setFieldState(name, { touched: true });
+            const errors = validateField(Schema[name], value);
+            this._setFieldState(name, {
+                errors,
+                touched: true
+            });
         }
 
         render() {
             const props = {
                 ...this.props,
                 ...this.state,
-                handleChange: this.handleChange,
-                handleBlur: this.handleBlur,
                 handleSubmit: this.handleSubmit
             };
 
-            return <WrappedComponent {...props}/> 
+            return <WrappedForm {...props}/> 
         }
   }
 }

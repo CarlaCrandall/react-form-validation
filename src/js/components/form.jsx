@@ -12,7 +12,7 @@ class Form extends React.Component {
     }
 
     render() {
-        const { fields, errors, valid, handleChange, handleBlur, handleSubmit } = this.props;
+        const { fields, errors, valid, handleSubmit } = this.props;
         const { name, random } = fields;
 
         return (
@@ -22,12 +22,9 @@ class Form extends React.Component {
                     <ValidatedField
                         type="text"
                         id="name"
-                        name="name"
                         {...name}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
                     />
-                    {errors.name}
+                    {name.errors}
                 </div>
 
                 <div>
@@ -35,12 +32,9 @@ class Form extends React.Component {
                     <ValidatedField
                         type="text"
                         id="random"
-                        name="random"
                         {...random}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
                     />
-                    {errors.random}
+                    {random.errors}
                 </div>
 
                 <input type="submit" value="Submit" />
