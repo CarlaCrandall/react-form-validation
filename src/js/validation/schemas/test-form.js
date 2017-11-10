@@ -13,7 +13,11 @@ export default {
         rule: Rules.maxLength.bind(null, 5),
         message: MESSAGES.maxLength.replace('{{LENGTH}}', 5)
     }],
-    random: [{
+    gender: [{
+        rule: Rules.required,
+        message: MESSAGES.required
+    }],
+    comments: [{
         rule: Rules.required,
         message: MESSAGES.required
     }, {

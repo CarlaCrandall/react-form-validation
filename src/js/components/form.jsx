@@ -1,6 +1,7 @@
 import React from 'react';
 import { TestFormSchema } from '../validation/schemas';
-import { ValidatedField, ValidatedForm } from '../validation';
+import { ValidatedForm } from '../validation';
+import { ValidatedInput, ValidatedTextArea, ValidatedSelect } from './fields.jsx';
 
 
 class Form extends React.Component {
@@ -13,28 +14,24 @@ class Form extends React.Component {
 
     render() {
         const { fields, errors, valid, handleSubmit } = this.props;
-        const { name, random } = fields;
+        const { name, gender, comments } = fields;
 
         return (
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="name">Name</label>
-                    <ValidatedField
-                        type="text"
-                        id="name"
-                        {...name}
-                    />
-                    {name.errors}
+                    <ValidatedInput type="text" id="name" {...name} />
+                    <p>{name.errors}</p>
                 </div>
-
                 <div>
-                    <label htmlFor="random">Random</label>
-                    <ValidatedField
-                        type="text"
-                        id="random"
-                        {...random}
-                    />
-                    {random.errors}
+                    <label htmlFor="gender">Gender</label>
+                    <ValidatedSelect id="gender" options={['Male', 'Female']} {...gender} />
+                    <p>{gender.errors}</p>
+                </div>
+                <div>
+                    <label htmlFor="comments">Comments</label>
+                    <ValidatedTextArea id="comments" {...comments} />
+                    <p>{comments.errors}</p>
                 </div>
 
                 <input type="submit" value="Submit" />

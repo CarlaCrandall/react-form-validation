@@ -26,8 +26,8 @@ export default (WrappedForm, Schema) => {
                         valid: null,
                         pristine: true,
                         touched: false,
-                        onChange: (name, value) => this.handleChange(name, value),
-                        onBlur: (name, value) => this.handleBlur(name, value)
+                        handleChange: (name, value) => this.handleChange(name, value),
+                        handleBlur: (name, value) => this.handleBlur(name, value)
                     };
                 }
             });
@@ -76,7 +76,7 @@ export default (WrappedForm, Schema) => {
                 handleSubmit: this.handleSubmit
             };
 
-            return <WrappedForm {...props}/> 
+            return <WrappedForm {...props} /> 
         }
   }
 }

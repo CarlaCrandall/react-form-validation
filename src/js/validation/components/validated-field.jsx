@@ -1,41 +1,40 @@
 import React from 'react';
 import { isFunction } from '../utils';
 
-export default class ValidatedField extends React.Component {
 
-    static propTypes = {};
+export default (WrappedField) => {
+    return class ValidatedField extends React.Component {
 
-    constructor(props) {
-        super(props);
+        static propTypes = {};
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
-    }
+        constructor(props) {
+            super(props);
 
-    handleChange(event) {
-        const { onChange } = this.props;
-        const { name, value } = event.target;
-        isFunction(onChange) && onChange(name, value);
-    }
+            this.handleChange = this.handleChange.bind(this);
+            this.handleBlur = this.handleBlur.bind(this);
+        }
 
-    handleBlur(event) {
-        const { onBlur } = this.props;
-        const { name, value } = event.target;
-        isFunction(onBlur) && onBlur(name, value);
-    }
+        handleChange(event) {
+            const { handleChange } = this.props;
+            const { name, value } = event.target;
+            isFunction(handleChange) && handleChange(name, value);
+        }
 
-    render() {
-        const { type, name, value, errors, valid, pristine, touched, onChange, onBlur, ...otherProps } = this.props;
+        handleBlur(event) {
+            const { handleBlur } = this.props;
+            const { name, value } = event.target;
+            isFunction(handleBlur) && handleBlur(name, value);
+        }
 
-        return (
-            <input 
-                type={type} 
-                name={name} 
-                value={value}
-                {...otherProps}
-                onChange={this.handleChange}
-                onBlur={this.handleBlur} 
-            />
-        );
+        render() {
+            const { handleChange, handleBlur, ...passThroughProps } = this.props;
+            const props = {
+                ...passThroughProps,
+                onChange: this.handleChange,
+                onBlur: this.handleBlur
+            };
+
+            return <WrappedField {...props} /> 
+        }
     }
 }
