@@ -1,0 +1,7 @@
+* Create HOC for validated-field
+* Add support for default rules for form
+* Add support for default values for fields
+* Add support for default messages
+* When touched is true, Validate onChange
+* Add more rules
+* Map schema to rules
