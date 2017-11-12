@@ -1,6 +1,8 @@
 import { EXPRESSIONS } from './config';
 
-export const required = value => value ? true : false;
+export const required = value => {
+    return !!value;
+}
 
 export const minLength = (len, value) => {
     if (value) return value.length >= len;

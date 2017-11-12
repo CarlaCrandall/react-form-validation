@@ -26,6 +26,7 @@ export default (WrappedForm, Schema) => {
                         valid: null,
                         pristine: true,
                         touched: false,
+                        handleMount: (name, state) => this.handleMount(name, state),
                         handleChange: (name, value) => this.handleChange(name, value),
                         handleBlur: (name, value) => this.handleBlur(name, value)
                     };
@@ -39,6 +40,10 @@ export default (WrappedForm, Schema) => {
             const { fields } = this.state;
             fields[name] = { ...fields[name], ...state };
             this.setState({ fields });
+        }
+
+        handleMount(name, state) {
+            this._setFieldState(name, state);
         }
 
         handleSubmit(event) {
@@ -63,6 +68,7 @@ export default (WrappedForm, Schema) => {
 
         handleBlur(name, value) {
             const errors = validateField(Schema[name], value);
+
             this._setFieldState(name, {
                 errors,
                 touched: true
@@ -73,6 +79,7 @@ export default (WrappedForm, Schema) => {
             const props = {
                 ...this.props,
                 ...this.state,
+                handleMount: this.handleMount,
                 handleSubmit: this.handleSubmit
             };
 

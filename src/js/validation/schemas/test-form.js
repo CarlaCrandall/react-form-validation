@@ -13,7 +13,7 @@ export default {
         rule: Rules.maxLength.bind(null, 5),
         message: MESSAGES.maxLength.replace('{{LENGTH}}', 5)
     }],
-    gender: [{
+    country: [{
         rule: Rules.required,
         message: MESSAGES.required
     }],
@@ -23,5 +23,9 @@ export default {
     }, {
         rule: Rules.regex.bind(null, 'alpha'),
         message: MESSAGES.alpha
+    }],
+    signup: [{
+        rule: Rules.required,
+        message: MESSAGES.required
     }]
 };
